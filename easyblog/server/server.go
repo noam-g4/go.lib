@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 	"net"
 	"net/http"
 
@@ -16,8 +17,7 @@ type deps struct {
 }
 
 func NewServer(d deps) *http.Server {
-	// TODO: add config to fetch port
-	srv := http.Server{Addr: ":2508", Handler: d.Handler}
+	srv := http.Server{Addr: ":8080", Handler: d.Handler}
 
 	d.LC.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
@@ -26,7 +26,7 @@ func NewServer(d deps) *http.Server {
 				return err
 			}
 
-			// TODO: add logger to log the startup
+			log.Print("server is starting")
 			go srv.Serve(ln)
 			return nil
 		},
